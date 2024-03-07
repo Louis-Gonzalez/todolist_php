@@ -1,0 +1,12 @@
+{# On étend le fichier base ici, car dans base on a déclare des blocks #}
+{% extends 'base.twig' %} 
+
+{% block content %}
+    <h1>Home Contact</h1>
+    <p>Hello {{ name }}</p>
+    <ul>
+        {% for task in tasks %}
+            <li>{{ task }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
