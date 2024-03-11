@@ -2,13 +2,69 @@
 {% extends 'base.twig' %} 
 
 {% block content %}
-    <h1>Home Task</h1>
-    <p>Hello {{ name }}</p>
-    <ul>
-        {% for task in tasks %}
-            <li>{{ task }}</li>
-        {% endfor %}
-    </ul>
+    <div class="text-center m-2">
+        <h1>Home Task</h1>
+    </div>
+    <form class="d-flex" role="search" >
+        <div class="add-post m-2">
+            <a class="btn btn-success" href="http://localhost/formation_php/todolist_php/public/task/new">Ajouter une Tache</a> <!--  la valeur du href correspond au nom du controller action renvoie au nom de la fonction -->
+        </div>
+        <input name="page" value="admintabcar" type="hidden"> <!-- pour chercher dans la passe ciblé dans value-->
+        <input name="action" value="search" type="hidden">
+        <input name="keywords" class="form-control m-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-info m-2" type="submit">Search</button>
+    </form>
+
+    <table class="table table-striped  m-2">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Durée</th>
+                <th scope="col">Etat</th>
+                <th scope="col">Date création</th>
+                <th scope="col">Date modification</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <th scope="row">{{ task.id }}</th>
+                <td>{{ task.title }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.duration }}</td>
+                <td>{{ task.status }}</td>
+                <td>{{ task.create_at }}</td>
+                <td>{{ task.update_at }}</td>
+            
+                <td style="text-align:center">
+                    <a type="button" class="btn btn-warning" href="http://localhost/formation_php/todolist_php/public/task/{{task.id}}">
+                        Voir la tache
+                    </a>
+                    <a type="button" class="btn btn-primary" href="http://localhost/formation_php/todolist_php/public/task/update/{{task.id}}">
+                        Modifier la tâche
+                    </a>
+                    <a type="button" class="btn btn-danger" href="javascript:deleteTask({{task.id}})">
+                        Supprimer la tâche
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        function deleteTask(id) {
+            console.log(id);
+            // On affiche une fenetre de controle pour confirmer la suppression
+            const question = window.confirm("Voulez-vous vraiment supprimer cette tâche" + id + "?");
+            // On fait l'action de supprimer seulement si la fenetre de controle est confirmer
+            if (question === true) {
+                window.location.href = "http://localhost/formation_php/todolist_php/public/task/delete/" + id;
+            }
+        }
+    </script>
 {% endblock %}
 
 

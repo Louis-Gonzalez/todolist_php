@@ -2,6 +2,46 @@
 {% extends 'base.twig' %} 
 
 {% block content %}
-    <h1>New Task</h1>
-    <p>{{text }}</p>
+    <div class= "text-center">
+        <h1>New Task</h1>
+    </div>
+    <div class= "text-center">
+        <form class="text-center" method="POST" action="http://localhost/formation_php/todolist_php/public/task/new" >
+            <div class="m-2">
+                <label for="title" class="form-label">Nom de la tache *</label>
+                <input type="text" class="form-control" placeholder="Nom de la tache" name="title" required>
+            </div>
+            <div class="m-2" >
+                <label for="description" class="form-label">Description de la tache *</label>
+                <textarea maxlength="255" class="form-control" style="height: 100px" placeholder="Description de la tache" name="description" required></textarea>
+            </div>
+            <div class="m-6"> <!-- faire un menu déroulant -->
+                <label for="duration">Choose duration</label>
+                <select name="duration" id="duration" required>
+                    <option>--Please choose an option--</option>
+                    <option>Court terme</option>
+                    <option>Moyen terme</option>
+                    <option>Long terme</option>
+                </select>
+            </div>
+            <div class="m-2"><!-- faire un menu déroulant -->
+                <label for="status">Choose a status</label>
+                <select name="status" id="status" required>
+                    <option>--Please choose an option--</option>
+                    <option>En cours</option>
+                    <option>En attente</option>
+                    <option>Termine</option>
+                </select>
+            </div>
+            <div>
+                <a class="btn btn-primary" href="http://localhost/formation_php/todolist_php/public/task">Back</a>
+                <button type="submit" class="btn btn-success m-1">Ajouter la tâche</button>
+            </div>
+        </form>
+    </div>
+
+
+
+
+
 {% endblock %}

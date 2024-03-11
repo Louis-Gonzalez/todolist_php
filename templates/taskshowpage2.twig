@@ -1,0 +1,23 @@
+{# On étend le fichier base ici, car dans base on a déclare des blocks #}
+{% extends 'base.twig' %} 
+
+{% block content %}
+    <div class="text-center m-2">
+        <h1>Show Task {{task.id}}</h1>
+        <p class="catégorie m-2"> Title :</p>
+        <p class="info m-2">{{task.title}} </p>
+        <p class="catégorie m-2"> Description : </p>
+        <p class="info m-2"> {{task.description}} </p>
+        <p class="catégorie m-2"> Durée : </p>
+        <p class="info m-2"> {{task.duration}} </p>
+        <p class="catégorie m-2"> Etat : </p>
+        <p class="info m-2"> {{task.status}} </p>
+        <p class="catégorie m-2"> Date de creation : </p>
+        <p class="info m-2"> {{task.create_at}} </p>
+        <p class="catégorie m-2"> Date de mise à jour : </p>
+        <p class="info m-2"> {{task.update_at}} </p>
+        <p class="m-5">
+            <a class="btn btn-primary" href="http://localhost/formation_php/todolist_php/public/task">Back</a>
+        </p>
+    </div>
+{% endblock %}

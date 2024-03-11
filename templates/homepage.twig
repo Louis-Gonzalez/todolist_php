@@ -2,13 +2,15 @@
 {% extends 'base.twig' %} 
 
 {% block content %}
-    <h1>Homepage</h1>
-    <p>Hello {{ name }}</p>
-    <ul>
-        {% for task in tasks %}
-            <li>{{ task }}</li>
-        {% endfor %}
-    </ul>
+    <div class="text-center">
+        <h1>Home Page</h1>
+        <p>Hello {{ name }}</p>
+
+            {% for task in tasks %}
+                {{ task }}</li>
+            {% endfor %}
+
+    </div>
 {% endblock %}
 
 

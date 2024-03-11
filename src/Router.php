@@ -19,28 +19,33 @@ class Router {
     public function index() {
         // exemples de routes
         $routes = [
-            '/' => [
+                '/' => [
                 'controller' => 'HomeController@index',
                 'method' => 'GET'],
 
-            '/task' => [
+                '/task' => [
                 'controller' => 'TaskController@index',
                 'method' => 'GET'],
 
                 '/task/new' => [
                     'controller' => 'TaskController@new',
-                    'method' => 'GET'],
+                    'method' => 'POST'],
+                
+                '/task/delete/:id' => [
+                    'controller' => 'TaskController@delete',
+                    'method' => 'POST'],
 
-            '/task/:id' => [
+                '/task/:id' => [
                 'controller' => 'TaskController@show',
                 'method' => 'GET'],
 
-            '/contact' => [
+                '/contact' => [
                 'controller' => 'ContactController@index',
                 'method' => 'GET'],
         ]; 
         // Récupérer l'URL demandée
         $url = $_SERVER['REQUEST_URI'];
+        $parts = explode('/', $url);
 
         /////////////////////////////// Trouver le controller et la méthode corresponante  ////////////////////////////////////////////////////////
         // La route pour la home 
@@ -53,7 +58,7 @@ class Router {
         }
 
         // La route pour la tâche
-        if ($url === '/formation_php/todolist_php/public/task'){
+        else if ($url === '/formation_php/todolist_php/public/task'){
 
             // Instancier le controller et appeler la méthode 
             $controller = new TaskController();
@@ -61,15 +66,25 @@ class Router {
         }
 
         // La route pour la tâche new
-        if ($url === '/formation_php/todolist_php/public/task/new'){
+        else if ($url === '/formation_php/todolist_php/public/task/new'){
 
             // Instancier le controller et appeler la méthode 
             $controller = new TaskController();
             $controller->new();
         }
 
+        // La route pour la tâche new
+
+        else if (array_key_exists(6, $parts) && intval($parts[6]) && $parts[6] !== "" && $parts[5] === "delete" && $parts[4] === "task"){
+                // Instancier le controller et appeler la méthode 
+                $id = (int)$parts[6];
+                $controller = new TaskController();
+                $controller->delete($id);
+            }
+
+
         // La route pour la page contact
-        if ($url === '/formation_php/todolist_php/public/contact'){
+        else if ($url === '/formation_php/todolist_php/public/contact'){
 
             // Instancier le controller et appeler la méthode 
             $controller = new ContactController();
@@ -79,11 +94,11 @@ class Router {
         // La route pour la tâche show
         // var_dump($url);
         // "/formation_php/todolist_php/public/task/50/"
-        $parts = explode('/', $url);
-        if (array_key_exists(5, $parts) && $parts[5] !== "" && $parts[4] === "task"){
-            
+        // intval vérifier si c'est un integer
+        
+        if (array_key_exists(5, $parts) && intval($parts[5]) && $parts[5] !== "" && $parts[4] === "task"){
                 // Instancier le controller et appeler la méthode 
-                $id = $parts[5];
+                $id = (int)$parts[5];
                 $controller = new TaskController();
                 $controller->show($id);
         }

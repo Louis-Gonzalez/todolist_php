@@ -1,0 +1,27 @@
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+footer {
+    margin-top: auto;
+}
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 5rem;
+    padding-left: 5rem;
+    padding : 1rem;
+
+}
+h1{
+    color : red;
+    font-weight: bold;
+}
+
+.catégorie{
+    text-decoration: underline black;
+    font-weight: bold;
+}

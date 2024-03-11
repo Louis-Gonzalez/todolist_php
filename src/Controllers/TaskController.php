@@ -4,8 +4,11 @@
 namespace App\TodolistPhp\Controllers;
 
 // On déclare la class nécessaire 
+
+use App\TodolistPhp\Services\Database;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use App\TodolistPhp\Services\Utils;
 
 // On déclare la classe TaskController
 class TaskController
@@ -22,11 +25,24 @@ class TaskController
         // Initialiser twig 
         $twig = new Environment($loader);
 
-        $tasks = ['Faire une entrée', 'Faire un plat','Faire un gateau'];
+        // Se connecter à la base de données
+        $pdo = new Database(
+            "127.0.0.1",
+            "todolist_php",
+            "3306",
+            "root",
+            ""
+        );
+        $tasks = $pdo->selectAll("SELECT * FROM task");
+
+        // echo "<pre>";
+        // var_dump($pdo) ;
+        // echo "</pre>";
+        // die();
+
         // Rendre une vue
         echo $twig->render('taskpage.twig', [
-                                                'name' => 'Seraphin_BAX',
-                                                'tasks' => $tasks
+                                                'tasks' => $tasks,
                                             ]);
     }
 // On délcare la fonction new
@@ -41,16 +57,135 @@ class TaskController
         // Initialiser twig 
         $twig = new Environment($loader);
 
+        if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+
+                    // Se connecter à la base de données
+            $pdo = new Database(
+                                    "127.0.0.1",
+                                    "todolist_php",
+                                    "3306",
+                                    "root",
+                                    ""
+                                );
+
+            // Vérification des champs qui ont update dans le formulaire
+            if(isset($_POST['title']) && isset($_POST['description']) && isset($_POST['duration']) && isset($_POST['status'])
+            && !empty($_POST['title']) && !empty($_POST['description']) && !empty($_POST['duration']) && !empty($_POST['status'])) 
+                {
+                    $title= Utils::cleaner($_POST['title']);
+                    $description = Utils::cleaner($_POST['description']);
+                    $duration = Utils::cleaner($_POST['duration']);
+                    $status = Utils::cleaner($_POST['status']);
+
+                    // Insertion des champs dans la base de données
+                    $newTask = $pdo->query("    INSERT INTO task 
+                                                (title, description, duration, status) 
+                                                VALUES ( '$title', '$description', '$duration', '$status')");
+                    // Redirection vers le tableau des tâches
+                    header('Location: /formation_php/todolist_php/public/task');
+                }
+        }
         // Rendre une vue
         echo $twig->render('tasknewpage.twig', [
-                                                'name' => 'Seraphin_BAX',
-                                                'text' => $text
-                                            ]);
+                                                'text' => $text,
+                                                ]);
     }
+    // public function update(int $id)
+    // {
+    //     // la correspondance de l'id souhaite via une requete sql
+    //     // Se connecter à la base de données
+    //     $pdo = new Database(
+    //         "127.0.0.1",
+    //         "todolist_php",
+    //         "3306",
+    //         "root",
+    //         ""
+    //     );
+        
+    //     $update_at = date("Y-m-d H:i:s");
+    //     $post_id = (int) $_GET['id'];
 
-    // On délcare la fonction show qui prend en parametre $id
-    public function show($id)
+    //     // Vérification des champs qui ont update dans le formulaire
+    //     if(isset($_POST['title']) && isset($_POST['description']) && isset($_POST['image']) 
+    //     && !empty($_POST['title']) && !empty($_POST['description']) && !empty($_POST['image'])) 
+    //     {   
+    //         $title= Utils::cleaner($_POST['title']);
+    //         $description = Utils::cleaner($_POST['description']);
+    //         $image = Utils::cleaner($_POST['image']);
+    //         $update = $manager->update($post_id, [
+    //                                                 $user_id,
+    //                                                 $title,
+    //                                                 $description,
+    //                                                 $image,
+    //                                                 $update_at
+    //                                             ]);
+    //         header ('Location: ?page=admintabcard');
+    //     };
+    //     $post = $manager->getOneById($post_id);
+    //     $template = './views/template_admin_update_card.phtml';
+    //     $this->render($template, [
+    //         'post' => $post,
+    //         'id' => $post_id
+    //     ]);
+
+
+    // }
+    public function delete(int $id)
     {
-        echo "C'est la page pour voir une tâche ". $id . "!"; 
+        // la correspondance de l'id souhaite via une requete sql
+        // Se connecter à la base de données
+        $pdo = new Database(
+            "127.0.0.1",
+            "todolist_php",
+            "3306",
+            "root",
+            ""
+        );
+
+
+        $task = $pdo->select("DELETE FROM task WHERE id = " .$id);
+        header('Location: /formation_php/todolist_php/public/task');
+    }
+    // On délcare la fonction show qui prend en parametre $id
+    public function show(int $id)
+
+    {   
+        
+        // Déterminer le dossier qui va contenir les vues   
+        $loader = new FilesystemLoader("../templates"); 
+
+        // Initialiser twig 
+        $twig = new Environment($loader);
+
+        // la correspondance de l'id souhaite via une requete sql
+        // Se connecter à la base de données
+        $pdo = new Database(
+            "127.0.0.1",
+            "todolist_php",
+            "3306",
+            "root",
+            ""
+        );
+
+        ////////////// Méthode 1 ////////////////////////////////////////////////////////////////
+        // $tasks = $pdo->selectAll("SELECT * FROM task ");
+
+        // echo $twig->render('taskshowpage.twig', [   
+        //                                             'tasks' => $tasks,
+        //                                             'id' => $id,
+        //                                             'title' => $tasks[$id-1]['title'],
+        //                                             'description' => $tasks[$id-1]['description'],
+        //                                             'duration' => $tasks[$id-1]['duration'],
+        //                                             'status' => $tasks[$id-1]['status'],
+        //                                             'create_at' => $tasks[$id-1]['create_at'],
+        //                                             'update_at' => $tasks[$id-1]['update_at']
+        //                                         ]);
+
+        /////////// Méthode 2 //////////////////////////////////////////////////////////////////////
+        $task = $pdo->select("SELECT * FROM task WHERE id = " .$id);
+
+        echo $twig->render('taskshowpage2.twig',[
+                                                    'task' => $task
+                                                ]);
     }
 }
