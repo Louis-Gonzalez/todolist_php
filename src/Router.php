@@ -34,6 +34,10 @@ class Router {
                 '/task/delete/:id' => [
                     'controller' => 'TaskController@delete',
                     'method' => 'POST'],
+                
+                '/task/update/:id' => [
+                    'controller' => 'TaskController@update',
+                    'method' => 'POST'],
 
                 '/task/:id' => [
                 'controller' => 'TaskController@show',
@@ -91,8 +95,6 @@ class Router {
             $controller->index();
         }
 
-        // La route pour la tâche show
-        // var_dump($url);
         // "/formation_php/todolist_php/public/task/50/"
         // intval vérifier si c'est un integer
         
@@ -103,7 +105,18 @@ class Router {
                 $controller->show($id);
         }
         
+        
+        // La route pour la tâche update
+        // exemple d'url : /formation_php/todolist_php/public/task/update/11
+        if (array_key_exists(6, $parts) && intval($parts[6]) && $parts[5] == "update" && $parts[4] === "task"){
+            // Instancier le controller et appeler la méthode 
+            $id = (int)$parts[6];
+            $controller = new TaskController();
+            $controller->update($id);
+        }
+        
     }
+    
     // public function notFound() {
     
     //     // On affiche la page 404
@@ -115,18 +128,9 @@ class Router {
     //     die();
     //     $routes = ['/', '/task' , '/task/new', '/task/:id' ];
 
-
     //     if (!in_array($url, $routes, true)) {
     //         echo "Error 404 not found";
     //     };
     // }
 }
-
-
-// Récupérer l'URL demandée  //// fait 
-// Inclure le fichier du controler avec "requi_once"  ////// fait
-// Instancier le controler et appeler la méthode  ///// fait 
-// Gérer les erreurs (par exemple, afficher un page 404)
-
-
 ?>

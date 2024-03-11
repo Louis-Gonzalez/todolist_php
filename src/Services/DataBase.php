@@ -40,7 +40,7 @@ class Database {
             $this->db_port = $db_port;
             $this->db_user = $db_user;
             $this->db_pass = $db_pass;
-            $this->db_dsn = 'mysql:host='.$this->db_host.';dbname='.$this->db_name.';port='.$this->db_port.'charset=utf8';
+            $this->db_dsn = 'mysql:host='.$this->db_host.';dbname='.$this->db_name.';port='.$this->db_port.';charset=utf8';
         }
         // On vérifie si le PDO est null soit la base de données non connectée
         private function getPDO() {

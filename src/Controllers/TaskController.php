@@ -141,11 +141,51 @@ class TaskController
             "root",
             ""
         );
-
-
         $task = $pdo->select("DELETE FROM task WHERE id = " .$id);
         header('Location: /formation_php/todolist_php/public/task');
     }
+    public function update($id) {
+        $loader = new FilesystemLoader("../templates"); 
+        $twig = new Environment($loader);
+
+        $pdo = new Database(
+            "127.0.0.1",
+            "todolist_php",
+            "3306",
+            "root",
+            ""
+        );
+        $task = $pdo->select(
+            "SELECT * from task where id = " . $id
+        );
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $title = Utils::cleaner($_POST['title']);
+            $description = Utils::cleaner($_POST['description']);
+            $duration = Utils::cleaner($_POST['duration']);
+            $status = Utils::cleaner($_POST['status']);
+            $update_at = date("Y-m-d H:i:s");
+
+            $pdo->query(
+                            "update task set title = :title, description = :description, duration = :duration, status = :status, update_at = :update_at where id = :id",
+                            [
+                                'id' => $id,
+                                'title' => $title,
+                                'description' => $description,
+                                'duration' => $duration,
+                                'status' => $status,
+                                'update_at' => $update_at,
+                            ]
+        );
+        header("Location: http://localhost/formation_php/todolist_php/public/task");
+        }
+        
+        echo $twig->render('taskupdatepage.twig',   [
+                                                    'task' => $task
+                                                    ]);
+    }
+    
     // On délcare la fonction show qui prend en parametre $id
     public function show(int $id)
 
