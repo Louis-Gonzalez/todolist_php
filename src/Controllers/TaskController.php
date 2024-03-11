@@ -9,6 +9,7 @@ use App\TodolistPhp\Services\Database;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use App\TodolistPhp\Services\Utils;
+use App\TodolistPhp\Repository\TaskRepository;
 
 // On déclare la classe TaskController
 class TaskController
@@ -25,20 +26,8 @@ class TaskController
         // Initialiser twig 
         $twig = new Environment($loader);
 
-        // Se connecter à la base de données
-        $pdo = new Database(
-            "127.0.0.1",
-            "todolist_php",
-            "3306",
-            "root",
-            ""
-        );
-        $tasks = $pdo->selectAll("SELECT * FROM task");
-
-        // echo "<pre>";
-        // var_dump($pdo) ;
-        // echo "</pre>";
-        // die();
+        $taskRepository = new TaskRepository();
+        $tasks = $taskRepository->index();
 
         // Rendre une vue
         echo $twig->render('taskpage.twig', [
@@ -90,46 +79,6 @@ class TaskController
                                                 'text' => $text,
                                                 ]);
     }
-    // public function update(int $id)
-    // {
-    //     // la correspondance de l'id souhaite via une requete sql
-    //     // Se connecter à la base de données
-    //     $pdo = new Database(
-    //         "127.0.0.1",
-    //         "todolist_php",
-    //         "3306",
-    //         "root",
-    //         ""
-    //     );
-        
-    //     $update_at = date("Y-m-d H:i:s");
-    //     $post_id = (int) $_GET['id'];
-
-    //     // Vérification des champs qui ont update dans le formulaire
-    //     if(isset($_POST['title']) && isset($_POST['description']) && isset($_POST['image']) 
-    //     && !empty($_POST['title']) && !empty($_POST['description']) && !empty($_POST['image'])) 
-    //     {   
-    //         $title= Utils::cleaner($_POST['title']);
-    //         $description = Utils::cleaner($_POST['description']);
-    //         $image = Utils::cleaner($_POST['image']);
-    //         $update = $manager->update($post_id, [
-    //                                                 $user_id,
-    //                                                 $title,
-    //                                                 $description,
-    //                                                 $image,
-    //                                                 $update_at
-    //                                             ]);
-    //         header ('Location: ?page=admintabcard');
-    //     };
-    //     $post = $manager->getOneById($post_id);
-    //     $template = './views/template_admin_update_card.phtml';
-    //     $this->render($template, [
-    //         'post' => $post,
-    //         'id' => $post_id
-    //     ]);
-
-
-    // }
     public function delete(int $id)
     {
         // la correspondance de l'id souhaite via une requete sql

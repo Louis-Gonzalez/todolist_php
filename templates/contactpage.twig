@@ -2,10 +2,64 @@
 {% extends 'base.twig' %} 
 
 {% block content %}
-    <h1>Home Contact</h1>
-    <ul>
-        {% for task in tasks %}
-            <li>{{ task }}</li>
-        {% endfor %}
-    </ul>
+    <div class="text-center m-2">
+        <h1>Home Contact</h1>
+    </div>
+    <form method ="POST" action="http://localhost/formation_php/todolist_php/public/contact" class="d-flex" role="search">
+        <div class="add-post m-2">
+            <a class="btn btn-success" href="http://localhost/formation_php/todolist_php/public/contact/new">Envoyer un message</a> <!--  la valeur du href correspond au nom du controller action renvoie au nom de la fonction -->
+        </div>
+        <input name="keyword" class="form-control me-2" type="search" placeholder="Search" aria-label="keyword">
+        <button class="btn btn-outline-success m-2" type="submit">Search</button>
+    </form>
+
+    <table class="table table-striped  m-2">
+        <thead class="text-center">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date création</th>
+                <th scope="col">Date modification</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for message in messages %}
+            <tr class="text-center">
+                <th scope="row">{{ message.id }}</th>
+                <td>{{ message.title }}</td>
+                <td>{{ message.description }}</td>
+                <td>{{ message.create_at }}</td>
+                <td>{{ message.update_at }}</td>
+            
+                <td style="text-align:center">
+                    <a type="button" class="btn btn-warning m-1" href="http://localhost/formation_php/todolist_php/public/contact/{{message.id}}">
+                        Voir le message
+                    </a>
+                    <a type="button" class="btn btn-primary m-1" href="http://localhost/formation_php/todolist_php/public/contact/update/{{message.id}}">
+                        Modifier le message
+                    </a>
+                    <a type="button" class="btn btn-danger m-1" href="javascript:deleteMessage({{message.id}})">
+                        Supprimer le message
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        function deleteTask(id) {
+            console.log(id);
+            // On affiche une fenetre de controle pour confirmer la suppression
+            const question = window.confirm("Voulez-vous vraiment supprimer cette tâche" + id + "?");
+            // On fait l'action de supprimer seulement si la fenetre de controle est confirmer
+            if (question === true) {
+                window.location.href = "http://localhost/formation_php/todolist_php/public/contact/delete/" + id;
+            }
+        }
+    </script>
 {% endblock %}
+
+
+

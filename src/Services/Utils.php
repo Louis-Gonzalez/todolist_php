@@ -14,8 +14,8 @@ class Utils
     }
     
     // factorisation de la fonction de nettoyage des champs inputs des formulaires
-    static function cleaner($input){
-        $stringclean = strip_tags($input);
+    static function cleaner($input){ 
+        $stringclean = strip_tags(urldecode(trim($input)));
         return $stringclean;
     }
 }

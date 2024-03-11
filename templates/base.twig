@@ -27,8 +27,9 @@
                             <a class="nav-link" href="/formation_php/todolist_php/public/contact">Contact</a>
                         </li>
                     </ul>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <form method ="POST" action="http://localhost/formation_php/todolist_php/public/task/search" class="d-flex" role="search">
+                        
+                        <input name="keyword" class="form-control me-2" type="search" placeholder="Search" aria-label="keyword">
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
                     </div>

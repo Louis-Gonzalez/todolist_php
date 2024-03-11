@@ -28,11 +28,11 @@ class Database {
 
     // constructeur
     public function __construct(
-            $db_host = DB_HOST, 
-            $db_name = DB_NAME, 
-            $db_port = DB_PORT, 
-            $db_user = DB_USER, 
-            $db_pass = DB_PASS,
+            $db_host = "", 
+            $db_name = "", 
+            $db_port = "", 
+            $db_user = "", 
+            $db_pass = "",
         ) 
         {
             $this->db_host = $db_host; // cela veut dire tu récupères la valeur de l'argument et tu l'assignes à la propriété $db_host

@@ -22,11 +22,13 @@ class HomeController
         // Initialiser twig 
         $twig = new Environment($loader);
 
-        $tasks = ['Soyez poli', 'Rester courtoi'];
+        $message1 = ['Créer une tâche qui est réalisable'];
+        $message2 = ['Pense à la temporalité de réalisation e la tâche'];
         // Rendre une vue
         echo $twig->render('homepage.twig', [
                                                 'name' => 'Seraphin_BAX',
-                                                'tasks' => $tasks
+                                                'message1' => $message1,
+                                                'message2' => $message2
                                             ]);
     }
 }
