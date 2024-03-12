@@ -82,36 +82,75 @@ class TaskRepository
         return $task;
     }
 
-    // public function update(int $id)
-    // {
-    //     $pdo = new Database(
-    //         "127.0.0.1",
-    //         "todolist_php",
-    //         "3306",
-    //         "root",
-    //         ""
-    //     );
-    //         $task = $pdo->select("SELECT * from task where id = " . $id);
+    public function update(int $id)
+    {
+        $pdo = new Database(
+            "127.0.0.1",
+            "todolist_php",
+            "3306",
+            "root",
+            ""
+        );
+            $task = $pdo->select("SELECT * from task where id = " . $id);
             
-    //         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //         $title = Utils::cleaner($_POST['title']);
-    //         $description = Utils::cleaner($_POST['description']);
-    //         $duration = Utils::cleaner($_POST['duration']);
-    //         $status = Utils::cleaner($_POST['status']);
-    //         $update_at = date("Y-m-d H:i:s");
-    //         $pdo->query(
-    //                         "update task set title = :title, description = :description, duration = :duration, status = :status, update_at = :update_at where id = :id",
-    //                         [
-    //                             'id' => $id,
-    //                             'title' => $title,
-    //                             'description' => $description,
-    //                             'duration' => $duration,
-    //                             'status' => $status,
-    //                             'update_at' => $update_at,
-    //                         ]
-    //     );
-    //     header("Location: http://localhost/formation_php/todolist_php/public/task");
-    //     }
-    //     return $task;
-    // }
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $title = Utils::cleaner($_POST['title']);
+            $description = Utils::cleaner($_POST['description']);
+            $duration = Utils::cleaner($_POST['duration']);
+            $who = Utils::cleaner($_POST['who']);
+            $status = Utils::cleaner($_POST['status']);
+            $update_at = date("Y-m-d H:i:s");
+            $pdo->query(
+                            "update task set title = :title, description = :description, duration = :duration, who = :who, status = :status, update_at = :update_at where id = :id",
+                            [
+                                'id' => $id,
+                                'title' => $title,
+                                'description' => $description,
+                                'duration' => $duration,
+                                'who' => $who,
+                                'status' => $status,
+                                'update_at' => $update_at,
+                            ]
+        );
+        header("Location: http://localhost/formation_php/todolist_php/public/task");
+        }
+        return $task;
+    }
+    public function updateStatus(int $id)
+    {
+        $pdo = new Database(
+            "127.0.0.1",
+            "todolist_php",
+            "3306",
+            "root",
+            ""
+        );
+        $task = $pdo->select("SELECT * from task where id = " . $id);
+
+        $update_at = date("Y-m-d H:i:s");
+        $status =   $task['status']; // On récupère le status depuis la requête sql
+        
+        // var_dump($status);
+
+        if ($status == "En attente") {
+            $status = "En cours";
+        }
+        else if ($status == "En cours") {
+                $status = "Termine";
+        }
+        var_dump($status);
+
+        $pdo->query (
+                        "update task set status = :status, update_at = :update_at where id = :id",
+                        [
+                            'id' => $id,
+                            'status' => $status,
+                            'update_at' => $update_at,
+                        ]
+        );
+        header("Location: http://localhost/formation_php/todolist_php/public/task");
+        
+        return $task;
+    }
+    
 }

@@ -22,6 +22,7 @@ class TaskController extends AbstractController
         // // Rendre une vue
         $this->render('taskpage.twig', ['tasks' => $tasks]);
     }
+    
 // On délcare la fonction new
     public function new()
     {
@@ -49,43 +50,14 @@ class TaskController extends AbstractController
     {
         $loader = new FilesystemLoader("../templates"); 
         $twig = new Environment($loader);
+
+        $taskRepository = new TaskRepository();
+        $task = $taskRepository->update($id);
         
-        $pdo = new Database(
-            "127.0.0.1",
-            "todolist_php",
-            "3306",
-            "root",
-            ""
-        );
-        $task = $pdo->select(
-            "SELECT * from task where id = " . $id
-        );
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $title = Utils::cleaner($_POST['title']);
-            $description = Utils::cleaner($_POST['description']);
-            $duration = Utils::cleaner($_POST['duration']);
-            $who = Utils::cleaner($_POST['who']);
-            $status = Utils::cleaner($_POST['status']);
-            $update_at = date("Y-m-d H:i:s");
-            $pdo->query(
-                            "update task set title = :title, description = :description, duration = :duration, who = :who, status = :status, update_at = :update_at where id = :id",
-                            [
-                                'id' => $id,
-                                'title' => $title,
-                                'description' => $description,
-                                'duration' => $duration,
-                                'who' => $who,
-                                'status' => $status,
-                                'update_at' => $update_at,
-                            ]
-        );
-        header("Location: http://localhost/formation_php/todolist_php/public/task");
-        }
-        echo $twig->render('taskupdatepage.twig',   [
+        $this->render('taskupdatepage.twig',   [
                                                     'task' => $task
-                                                    ]);
+                                                ]);
     }
-    
     // On délcare la fonction show qui prend en parametre $id
     public function show(int $id)
     {   
@@ -112,5 +84,17 @@ class TaskController extends AbstractController
         $this->render('taskshowpage2.twig',[
                                                     'task' => $task
                                                 ]);
+    }
+    public function updateStatus(int $id)
+    {
+        $loader = new FilesystemLoader("../templates");
+        $twig = new Environment($loader);
+
+        $taskRepository = new TaskRepository();
+        $task = $taskRepository->updateStatus($id);
+
+        $this->render('taskpage.twig',  [
+                                            'task' => $task
+                                        ]);
     }
 }

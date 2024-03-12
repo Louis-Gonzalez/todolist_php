@@ -10,6 +10,7 @@ use App\TodolistPhp\Controllers\HomeController;
 use App\TodolistPhp\Controllers\ContactController;
 use App\TodolistPhp\Controllers\SearchController;
 
+
 // ici on n'a pas besoin de l'autoloader car il est appellé dans le index 
 require_once('../vendor/autoload.php');
 
@@ -130,6 +131,22 @@ class Router
             $controller = new ContactController();
             $controller->new();
         }
+        
+        // /formation_php/todolist_php/public/contact/delete/3
+        else if (array_key_exists(6, $parts) && intval($parts[6]) && $parts[6] !== "" && $parts[5] === "delete" && $parts[4] === "contact") {
+            // Instancier le controller et appeler la méthode 
+            $id = (int)$parts[6];
+            $controller = new ContactController();
+            $controller->deleteMessage($id);
+        }
+               // La route pour la tâche update
+        // exemple d'url : /formation_php/todolist_php/public/contact/update/11
+        if (array_key_exists(6, $parts) && intval($parts[6]) && $parts[5] == "update" && $parts[4] === "contact") {
+            // Instancier le controller et appeler la méthode 
+            $id = (int)$parts[6];
+            $controller = new ContactController();
+            $controller->updateMessage($id);
+        }
 
         // "/formation_php/todolist_php/public/task/50/"
         // intval vérifier si c'est un integer
@@ -149,6 +166,14 @@ class Router
             $id = (int)$parts[6];
             $controller = new TaskController();
             $controller->update($id);
+        }
+                // La route pour la tâche update
+        // exemple d'url : /formation_php/todolist_php/public/task/update/status/11
+        if (array_key_exists(7, $parts) && intval($parts[7]) && $parts[6] == "status" && $parts[5] == "update" && $parts[4] === "task") {
+            // Instancier le controller et appeler la méthode 
+            $id = (int)$parts[7];
+            $controller = new TaskController();
+            $controller->updateStatus($id);
         }
 
         //localhost/formation_php/todolist_php/public/?%2F = %2F&keywords = typage

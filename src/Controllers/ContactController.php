@@ -9,30 +9,49 @@ use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use App\TodolistPhp\Services\Database;
 use App\TodolistPhp\Services\Utils;
+use App\TodolistPhp\Controllers\AbstractController;
+use App\TodolistPhp\Repository\ContactRepository;
 
 // On déclare le nom de la class
-class ContactController
+class ContactController extends AbstractController
 {
-    public function index(){
+    public function index()
+    {
         // echo "C'est la page d'accueil!";
         $loader = new FilesystemLoader("../templates"); 
         // Initialiser twig 
         $twig = new Environment($loader);
-
-        // Se connecter à la base de données
-        $pdo = new Database(
-            "127.0.0.1",
-            "todolist_php",
-            "3306",
-            "root",
-            ""
-        );
-        $messages = $pdo->selectAll("SELECT * FROM contact");
-        echo $twig->render('contactpage.twig', [
+        $messages = new ContactRepository();
+        $messages = $messages->index();
+        $this->render('contactpage.twig', [
                                                 'messages' => $messages,
                                             ]);
     }
 
+    public function show(int $id)
+    {
+
+        $loader = new FilesystemLoader("../templates"); 
+        // Initialiser twig 
+        $twig = new Environment($loader);
+
+        $message = new ContactRepository();
+        $message = $message->showMessage($id);
+
+        // Rendre une vue
+        $this->render('contactshowpage.twig',  [
+                                                        'message'=>$message
+                                                    ]);
+    }
+    public function deleteMessage(int $id)
+    {
+        $loader = new FilesystemLoader("../templates");
+        $twig = new Environment($loader);
+
+        $message = new ContactRepository();
+        $message = $message->deleteMessage($id);
+        header ('Location: /formation_php/todolist_php/public/contact');
+    }
     // On délcare la fonction index
     public function new()
     {
@@ -42,59 +61,26 @@ class ContactController
         // Initialiser twig 
         $twig = new Environment($loader);
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+        $message = new ContactRepository();
+        $message = $message->new();
 
-            // Se connecter à la base de données
-            $pdo = new Database(
-                            "127.0.0.1",
-                            "todolist_php",
-                            "3306",
-                            "root",
-                            ""
-                        );
-
-            // Vérification des champs qui ont update dans le formulaire
-            if(isset($_POST['title-message']) && isset($_POST['description-message']) && isset($_POST['email-message'])
-            && !empty($_POST['title-message']) && !empty($_POST['description-message']) && !empty($_POST['email-message'])) 
-                {
-                    $title= Utils::cleaner($_POST['title-message']);
-                    $description = Utils::cleaner($_POST['description-message']);
-                    $email = Utils::cleaner($_POST['email-message']);
-                    $create_at = date('Y-m-d H:i:s');
-                    $update_at = date('Y-m-d H:i:s');
-                    // Insertion des champs dans la base de données
-                    $contact = $pdo->query("    INSERT INTO contact 
-                                                (title, description, email, create_at, update_at) 
-                                                VALUES ( '$title', '$description', '$email', '$create_at', '$update_at')");
-                    // Redirection vers le tableau des tâches
-                    header('Location: /formation_php/todolist_php/public/contact');
-                }
-        }
-        // Rendre une vue
-        echo $twig->render('contactnewpage.twig', []);
+        //Rendre une vue
+        $this->render('contactnewpage.twig', []);
     }
+    public function updateMessage(int $id){
 
-    public function show(int $id){
-
-        $loader = new FilesystemLoader("../templates"); 
-        // Initialiser twig 
+        $loader = new FilesystemLoader("../templates");
         $twig = new Environment($loader);
 
-        $pdo = new Database(
-            "127.0.0.1",
-            "todolist_php",
-            "3306",
-            "root",
-            ""
-        );
-        $message = $pdo->select("SELECT * FROM contact where id = ". $id );
-        // Rendre une vue
-        echo $twig->render('contactshowpage.twig',  [
-                                                        'message'=>$message
-                                                    ]);
-    }
+        $message = new ContactRepository();
+        $message = $message->updateMessage($id);
 
-    
+        header ('Location: /formation_php/todolist_php/public/contact');
+        // Rendre une vue
+        $this->render('contactupdatepage.twig', [
+                                                    'message' => $message
+                                                ]);
+    }
 }
 
 ?>

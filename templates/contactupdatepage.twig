@@ -1,0 +1,37 @@
+{% extends "base.twig" %}
+{% block content %}
+
+    <div class= "text-center">
+        <h1>Home Contact</h1>
+        <p>Vous pouvez nous envoyer un message de contact pour différentes raisons: le soutien de notre todolist, des questions, des problèmes, etc. </p>
+    </div>
+
+    <div class= "text-center">
+        <form class="text-center" method="POST" action="http://localhost/formation_php/todolist_php/public/contact/" >
+            <div class="m-6"> <!-- faire un menu déroulant -->
+                <label for="title-message">Titre du message</label>
+                <select name="title-message" id="title-message" required>
+                    <option>--Please choose an option--</option>
+                    <option>Envoyer du soutien</option>
+                    <option>Poser une question</option>
+                    <option>Rencontrer un problème</option>
+                </select>
+            </div>
+            <div class="m-2" >
+                <label for="description-message" class="form-label">Description du message *</label>
+                <textarea maxlength="1000" class="form-control" style="height: 300px" placeholder="Description du message" name="description-message" required></textarea>
+            </div>
+            <div class="m-2" >
+                <label for="email-message" class="form-label">Ecrivez votre email *</label>
+                <input  class="form-control" type="email" placeholder="Renseigner votre email" name="email-message" required></input>
+            </div>
+            <div>
+                <a class="btn btn-primary" href="http://localhost/formation_php/todolist_php/public">Back</a>
+                <a class="btn btn-info" href="http://localhost/formation_php/todolist_php/contact/show">Show message</a>
+                <button type="submit" class="btn btn-success m-1">Envoyer votre message</button>
+            </div>
+        </form>
+    </div>
+
+
+{% endblock %}
