@@ -169,6 +169,12 @@ class Router
             $controller = new ContactController();
             $controller->show($id);
         }
+        if (array_key_exists(5, $parts) && $parts[5] === "search" && $parts[4] === "contact") {
+            // Instancier le controller et appeler la méthode 
+            $controller = new SearchController();
+            $controller->searchContact();
+        }
+
     }
 
     // public function notFound() {

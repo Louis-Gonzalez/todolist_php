@@ -53,8 +53,30 @@ class SearchController
                                                 'tasks' => $tasks
                                             ]);
     }
+    public function searchContact(){
+        $loader = new FilesystemLoader("../templates");
+        $twig = new Environment($loader);
+        $pdo = new Database(
+            "127.0.0.1",
+            "todolist_php",
+            "3306",
+            "root",
+            ""
+        );
+        // var_dump($_POST);
+        $keyword = $_POST['keyword'];
+
+        // var_dump("valeur de keyword : ", $keyword);
+        $sql = "SELECT * FROM contact
+                WHERE title LIKE '%$keyword%'
+                OR description LIKE '%$keyword%'";
+        
+        $messages = $pdo->selectAll($sql , []);
+        echo $twig->render('searchcontactpage.twig', [
+                                                'keyword' => $keyword,
+                                                'messages' => $messages
+                                            ]);
+    }
 }
-
-
 
 ?>
