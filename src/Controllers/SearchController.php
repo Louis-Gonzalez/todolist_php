@@ -7,10 +7,11 @@ namespace App\TodolistPhp\Controllers;
 // On déclare la class nécessaire 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
-use App\TodolistPhp\Services\Database;
+use App\TodolistPhp\Repository\SearchRepository;
+use App\TodolistPhp\Controllers\AbstractController;
 
 // On déclare le nom de la class
-class SearchController
+class SearchController extends AbstractController
 {
     // On délcare la fonction index
     public function index()
@@ -20,35 +21,12 @@ class SearchController
         $loader = new FilesystemLoader("../templates"); 
         // Initialiser twig 
         $twig = new Environment($loader);
-        // la correspondance de l'id souhaite via une requete sql
-        // Se connecter à la base de données
-        $pdo = new Database(
-            "127.0.0.1",
-            "todolist_php",
-            "3306",
-            "root",
-            ""
-        );
-        // var_dump($_POST);
+
         $keyword = $_POST['keyword'];
-
-        // var_dump("valeur de keyword : ", $keyword);
-        $sql = "SELECT * FROM task
-                WHERE title LIKE '%$keyword%'
-                or who LIKE '%$keyword%'
-                OR description LIKE '%$keyword%'
-                OR duration LIKE '%$keyword%'
-                OR status LIKE '%$keyword%' ";
-
-        // var_dump("valeur de sql : ", $sql);
-        $tasks = $pdo->selectAll($sql , []);             
-        // var_dump("valeur de tasks : ", $tasks);
-        // echo "<pre>";
-        // var_dump("valeur de pdo : ", $pdo);
-        // echo "</pre>";
-
+        $tasks = new SearchRepository(); 
+        $tasks = $tasks->search();
         // Rendre une vue
-        echo $twig->render('searchpage.twig', [
+        $this->render('searchpage.twig', [
                                                 'keyword' => $keyword,
                                                 'tasks' => $tasks
                                             ]);
@@ -56,28 +34,16 @@ class SearchController
     public function searchContact(){
         $loader = new FilesystemLoader("../templates");
         $twig = new Environment($loader);
-        $pdo = new Database(
-            "127.0.0.1",
-            "todolist_php",
-            "3306",
-            "root",
-            ""
-        );
-        // var_dump($_POST);
-        $keyword = $_POST['keyword'];
 
-        // var_dump("valeur de keyword : ", $keyword);
-        $sql = "SELECT * FROM contact
-                WHERE title LIKE '%$keyword%'
-                OR description LIKE '%$keyword%'";
+        $keyword = $_POST['keyword'];
+        $messages = new SearchRepository();
+        $messages = $messages->searchContact();
         
-        $messages = $pdo->selectAll($sql , []);
-        echo $twig->render('searchcontactpage.twig', [
+        $this->render('searchcontactpage.twig', [
                                                 'keyword' => $keyword,
                                                 'messages' => $messages
                                             ]);
     }
 }
-
 
 ?>
