@@ -25,6 +25,7 @@
                 <th scope="col">Date création</th>
                 <th scope="col">Date modification</th>
                 <th scope="col" class="text-center">Actions</th>
+                <th scope="col" class="text-center">Etat suivant</th>
             </tr>
         </thead>
         <tbody>
@@ -35,7 +36,15 @@
                 <td>{{ task.description }}</td>
                 <td>{{ task.duration }}</td>
                 <td>{{ task.who }}</td>
-                <td>{{ task.status }}</td>
+                <td>
+                    {% if task.status == "En attente" %}
+                        <span class="badge bg-warning">En attente</span>
+                    {% elseif task.status == "En cours" %}
+                        <span class="badge bg-primary">En cours</span>
+                    {% elseif task.status == "Termine" %}
+                        <span class="badge bg-success">Terminé</span>
+                    {% endif %}
+                </td>
                 <td>{{ task.create_at }}</td>
                 <td>{{ task.update_at }}</td>
             
@@ -45,12 +54,21 @@
                     </a>
                     <a type="button" class="btn btn-primary m-1" href="http://localhost/formation_php/todolist_php/public/task/update/{{task.id}}">
                         Modifier
-                    </a>
-                        <a type="button" class="btn btn-info m-1" href="http://localhost/formation_php/todolist_php/public/task/update/status/{{task.id}}">
-                        status
-                    </a>
                     <a type="button" class="btn btn-danger m-1" href="javascript:deleteTask({{task.id}})">
                         Supprimer
+                    </a>
+                </td>
+                <td>
+                    </a>
+                        {% if task.status == "En attente" %}
+                            <a type="button" class="btn btn-warning m-1" href="http://localhost/formation_php/todolist_php/public/task/update/status/{{task.id}}">
+                            Passer en cours
+                        {% elseif task.status == "En cours" %}
+                            <a type="button" class="btn btn-primary m-1" href="http://localhost/formation_php/todolist_php/public/task/update/status/{{task.id}}">
+                            Passer à terminer
+                        {% elseif task.status == "Termine" %}
+                            
+                        {% endif %}
                     </a>
                 </td>
             </tr>
