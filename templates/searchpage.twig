@@ -5,14 +5,13 @@
     <div class="text-center m-2">
         <h1>Search Page "{{ keyword }}"</h1>
     </div>
-    <form class="d-flex" role="search" >
+    <form method ="POST" action="http://localhost/formation_php/todolist_php/public/task/search" class="d-flex" role="search" >
         <div class="add-post m-2">
             <a class="btn btn-success" href="http://localhost/formation_php/todolist_php/public/task/new">Ajouter une Tache</a> <!--  la valeur du href correspond au nom du controller action renvoie au nom de la fonction -->
         </div>
-        <input name="keywords" class="form-control m-2" type="search" placeholder="Search" aria-label="Search">
+        <input name="keyword" class="form-control m-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-info m-2" type="submit">Search</button>
     </form>
-
     <table class="table table-striped  m-2">
         <thead>
             <tr>
@@ -20,6 +19,7 @@
                 <th scope="col">Title</th>
                 <th scope="col">Description</th>
                 <th scope="col">Durée</th>
+                <th scope="col">Qui</th>
                 <th scope="col">Etat</th>
                 <th scope="col">Date création</th>
                 <th scope="col">Date modification</th>
@@ -33,6 +33,7 @@
                 <td>{{ task.title }}</td>
                 <td>{{ task.description }}</td>
                 <td>{{ task.duration }}</td>
+                <td>{{ task.who }}</td>
                 <td>{{ task.status }}</td>
                 <td>{{ task.create_at }}</td>
                 <td>{{ task.update_at }}</td>

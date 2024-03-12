@@ -35,6 +35,7 @@ class SearchController
         // var_dump("valeur de keyword : ", $keyword);
         $sql = "SELECT * FROM task
                 WHERE title LIKE '%$keyword%'
+                or who LIKE '%$keyword%'
                 OR description LIKE '%$keyword%'
                 OR duration LIKE '%$keyword%'
                 OR status LIKE '%$keyword%' ";

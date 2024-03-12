@@ -24,12 +24,24 @@
                     <option {% if task.duration == "Long terme" %} selected {% endif %}>Long terme</option>
                 </select>
             </div>
+            <div class="m-2"> <!-- faire un menu déroulant -->
+                <label for="who" >Choose duration :</label>
+                <select name="who" id="who" required>
+                    <option>--Please choose an option--</option>
+                    <option {% if task.who == "Adam" %} selected {% endif %}>Adam</option>
+                    <option {% if task.who == "Cédric" %} selected {% endif %}>Cédric</option>
+                    <option {% if task.who == "Julien" %} selected {% endif %}>Julien</option>
+                    <option {% if task.who == "Louis" %} selected {% endif %}>Louis</option>
+                    <option {% if task.who == "Marc" %} selected {% endif %}>Marc</option>
+                    <option {% if task.who == "Thomas" %} selected {% endif %}>Thomas</option>
+                </select>
+            </div>
             <div class="m-2"><!-- faire un menu déroulant -->
                 <label for="status">Choose a status :</label>
                 <select name="status" id="status" required>
                     <option>--Please choose an option--</option>
-                    <option {% if task.status == "En cours" %} selected {% endif %}>En cours</option>
-                    <option {% if task.status == "En attente" %} selected {% endif %}>En attente</option>
+                    <option {% if task.status == "En cours" %} selected {% endif %}>En attente</option>
+                    <option {% if task.status == "En attente" %} selected {% endif %}>En cours</option>
                     <option {% if task.status == "Termine" %} selected {% endif %}>Termine</option>
                 </select>
             </div>

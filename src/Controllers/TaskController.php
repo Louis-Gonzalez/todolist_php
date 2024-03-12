@@ -12,39 +12,20 @@ use App\TodolistPhp\Services\Utils;
 use App\TodolistPhp\Repository\TaskRepository;
 
 // On déclare la classe TaskController
-class TaskController
+class TaskController extends AbstractController
 {
     // On délcare la fonction index par default
     public function index()
     {
-        // echo "C'est la page des tâches !";
-        
-        // Déterminer le dossier qui va contenir les vues
-        // __DIR__ = le dossier parant dans lequel on est  et dirname(__DIR__) = renvoie directement à la racine
-        $loader = new FilesystemLoader("../templates"); 
-
-        // Initialiser twig 
-        $twig = new Environment($loader);
-
         $taskRepository = new TaskRepository();
         $tasks = $taskRepository->index();
-
-        // Rendre une vue
-        echo $twig->render('taskpage.twig', [
-                                                'tasks' => $tasks,
-                                            ]);
+        // // Rendre une vue
+        $this->render('taskpage.twig', ['tasks' => $tasks]);
     }
 // On délcare la fonction new
     public function new()
     {
         $text = "C'est la page pour ajouter une tâche !";
-        
-        // Déterminer le dossier qui va contenir les vues
-        // __DIR__ = le dossier parant dans lequel on est  et dirname(__DIR__) = renvoie directement à la racine
-        $loader = new FilesystemLoader("../templates"); 
-
-        // Initialiser twig 
-        $twig = new Environment($loader);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
@@ -54,28 +35,21 @@ class TaskController
                 header('Location: /formation_php/todolist_php/public/task');
             };
         // Rendre une vue
-        echo $twig->render('tasknewpage.twig', [
+        $this->render('tasknewpage.twig',   [
                                                 'text' => $text,
-                                                ]);
+                                            ]);
     }
     public function delete(int $id)
     {
-        // la correspondance de l'id souhaite via une requete sql
-        // Se connecter à la base de données
-        $pdo = new Database(
-            "127.0.0.1",
-            "todolist_php",
-            "3306",
-            "root",
-            ""
-        );
-        $task = $pdo->select("DELETE FROM task WHERE id = " .$id);
+        $taskRepository = new TaskRepository();
+        $taskRepository->delete($id);
         header('Location: /formation_php/todolist_php/public/task');
     }
-    public function update($id) {
+    public function update($id) 
+    {
         $loader = new FilesystemLoader("../templates"); 
         $twig = new Environment($loader);
-
+        
         $pdo = new Database(
             "127.0.0.1",
             "todolist_php",
@@ -86,29 +60,27 @@ class TaskController
         $task = $pdo->select(
             "SELECT * from task where id = " . $id
         );
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
             $title = Utils::cleaner($_POST['title']);
             $description = Utils::cleaner($_POST['description']);
             $duration = Utils::cleaner($_POST['duration']);
+            $who = Utils::cleaner($_POST['who']);
             $status = Utils::cleaner($_POST['status']);
             $update_at = date("Y-m-d H:i:s");
-
             $pdo->query(
-                            "update task set title = :title, description = :description, duration = :duration, status = :status, update_at = :update_at where id = :id",
+                            "update task set title = :title, description = :description, duration = :duration, who = :who, status = :status, update_at = :update_at where id = :id",
                             [
                                 'id' => $id,
                                 'title' => $title,
                                 'description' => $description,
                                 'duration' => $duration,
+                                'who' => $who,
                                 'status' => $status,
                                 'update_at' => $update_at,
                             ]
         );
         header("Location: http://localhost/formation_php/todolist_php/public/task");
         }
-        
         echo $twig->render('taskupdatepage.twig',   [
                                                     'task' => $task
                                                     ]);
@@ -116,14 +88,7 @@ class TaskController
     
     // On délcare la fonction show qui prend en parametre $id
     public function show(int $id)
-
     {   
-        
-        // Déterminer le dossier qui va contenir les vues   
-        $loader = new FilesystemLoader("../templates"); 
-
-        // Initialiser twig 
-        $twig = new Environment($loader);
 
         $taskRepository = new TaskRepository();
         $task = $taskRepository->show($id);
@@ -144,7 +109,7 @@ class TaskController
 
         /////////// Méthode 2 //////////////////////////////////////////////////////////////////////
         
-        echo $twig->render('taskshowpage2.twig',[
+        $this->render('taskshowpage2.twig',[
                                                     'task' => $task
                                                 ]);
     }

@@ -20,10 +20,11 @@
                 <th scope="col">Title</th>
                 <th scope="col">Description</th>
                 <th scope="col">Durée</th>
+                <th scope="col">Qui</th>
                 <th scope="col">Etat</th>
                 <th scope="col">Date création</th>
                 <th scope="col">Date modification</th>
-                <th scope="col">Actions</th>
+                <th scope="col" class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -33,19 +34,20 @@
                 <td>{{ task.title }}</td>
                 <td>{{ task.description }}</td>
                 <td>{{ task.duration }}</td>
+                <td>{{ task.who }}</td>
                 <td>{{ task.status }}</td>
                 <td>{{ task.create_at }}</td>
                 <td>{{ task.update_at }}</td>
             
                 <td style="text-align:center">
                     <a type="button" class="btn btn-warning m-1" href="http://localhost/formation_php/todolist_php/public/task/{{task.id}}">
-                        Voir la tache
+                        Voir
                     </a>
                     <a type="button" class="btn btn-primary m-1" href="http://localhost/formation_php/todolist_php/public/task/update/{{task.id}}">
-                        Modifier la tâche
+                        Modifier
                     </a>
                     <a type="button" class="btn btn-danger m-1" href="javascript:deleteTask({{task.id}})">
-                        Supprimer la tâche
+                        Supprimer
                     </a>
                 </td>
             </tr>
