@@ -26,4 +26,13 @@ h1{
     font-weight: bold;
 }
 
+.task-board{
+    border: black solid 1px;
+    height: 50px;
+}
+.task-row{
+    height: 303px;
+    
+}
+
 

@@ -199,6 +199,12 @@ class Router
             $controller = new SearchController();
             $controller->searchContact();
         }
+        // localhost/formation_php/todolist_php/public/task/show/plan
+        if (array_key_exists(6, $parts) && $parts[6] === "plan" && $parts[5] === "show" && $parts[4] === "task") {
+            // Instancier le controller et appeler la méthode 
+            $controller = new TaskController();
+            $controller->showPlan();
+        }
 
     }
 

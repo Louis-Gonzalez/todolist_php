@@ -152,5 +152,34 @@ class TaskRepository
         
         return $task;
     }
+    public function showPlan()
+    {
+        $pdo = new Database(
+            "127.0.0.1",
+            "todolist_php",
+            "3306",
+            "root",
+            ""
+        );
+        $tasks = $pdo->selectAll("SELECT * from task");
+
+        $statusEnAttente = [];
+        $statusEncours = [];
+        $statusTermine = [];
+
+        foreach ($tasks as $task) {
+            if ($task['status'] == "En attente") {
+                $statusEnAttente[] = $task;
+            }
+            else if ($task['status'] == "En cours") {
+                $statusEncours[] = $task;
+            }
+            else if ($task['status'] == "Termine") {
+                $statusTermine[] = $task;
+            }
+        }
+        
+        return [$tasks, $statusEnAttente, $statusEncours, $statusTermine];
+    }
     
 }

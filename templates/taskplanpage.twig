@@ -1,0 +1,124 @@
+{% extends 'base.twig' %} 
+
+{% block content %}
+    <div class="text-center m-2">
+        <div>
+            <h1>Show Plan Task</h1>
+        </div>
+
+        <div class=" d-flex w-100">
+            <table class="task-board table table-striped  m-2">
+                <thead>
+                    <tr class="text-center">
+                        <th class="bg-warning" scope="col">Tache en attente</th>
+                        {# <th scope="col">Tache terminée</th>
+                        <th scope="col" class="text-center">Actions</th> #}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in statusEnAttente %}
+                    <tr class="task-row">
+                        <td style="text-align:center">
+                            <p>Id de la tache : {{task.id}}</p>
+                            <p>Titre de la tache : {{task.title}}</p>
+                            <p>Description de la tache : {{task.description}}</p>
+                            <p>Duree de la tache : {{task.duration}}</p>
+                            <p>Affection de la tache à : {{task.who}}</p>
+                            <p>
+                                <a type="button" class="btn btn-warning m-1" href="http://localhost/formation_php/todolist_php/public/task/{{task.id}}">
+                                        Voir
+                                </a>
+                                <a type="button" class="btn btn-primary m-1" href="http://localhost/formation_php/todolist_php/public/task/update/{{task.id}}">
+                                        Modifier
+                                <a type="button" class="btn btn-danger m-1" href="javascript:deleteTask({{task.id}})">
+                                        Supprimer
+                                </a>
+                            </p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <table class=" task-board table table-striped  m-2">
+                <thead>
+                    <tr class="text-center">
+                        <th class="bg-primary" scope="col">Tache en cours</th>
+                        {# <th scope="col">Tache terminée</th>
+                        <th scope="col" class="text-center">Actions</th> #}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in statusEncours %}
+                    <tr class="task-row">
+                        <td style="text-align:center">
+                            <p>Id de la tache : {{task.id}}</p>
+                            <p>Titre de la tache : {{task.title}}</p>
+                            <p>Description de la tache : {{task.description}}</p>
+                            <p>Duree de la tache : {{task.duration}}</p>
+                            <p>Affection de la tache à : {{task.who}}</p>
+                            <p>
+                                <a type="button" class="btn btn-warning m-1" href="http://localhost/formation_php/todolist_php/public/task/{{task.id}}">
+                                        Voir
+                                </a>
+                                <a type="button" class="btn btn-primary m-1" href="http://localhost/formation_php/todolist_php/public/task/update/{{task.id}}">
+                                        Modifier
+                                <a type="button" class="btn btn-danger m-1" href="javascript:deleteTask({{task.id}})">
+                                        Supprimer
+                                </a>
+                            </p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <table class="task-board table table-striped  m-2">
+                <thead>
+                    <tr class="text-center">
+                        <th class="bg-success" scope="col">Tache Termine</th>
+                        {# <th scope="col">Tache terminée</th>
+                        <th scope="col" class="text-center">Actions</th> #}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in statusTermine %}
+                    <tr class="task-row">
+                        <td style="text-align:center">
+                            <p>Id de la tache : {{task.id}}</p>
+                            <p>Titre de la tache : {{task.title}}</p>
+                            <p>Description de la tache : {{task.description}}</p>
+                            <p>Duree de la tache : {{task.duration}}</p>
+                            <p>Affection de la tache à : {{task.who}}</p>
+                            <p>
+                                <a type="button" class="btn btn-warning m-1" href="http://localhost/formation_php/todolist_php/public/task/{{task.id}}">
+                                        Voir
+                                </a>
+                                <a type="button" class="btn btn-primary m-1" href="http://localhost/formation_php/todolist_php/public/task/update/{{task.id}}">
+                                        Modifier
+                                <a type="button" class="btn btn-danger m-1" href="javascript:deleteTask({{task.id}})">
+                                        Supprimer
+                                </a>
+                            </p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <p class="m-5">
+                <a class="btn btn-primary" href="http://localhost/formation_php/todolist_php/public/task">Back</a>
+            </p>
+        </div>
+    </div>
+    <script>
+        function deleteTask(id) {
+            console.log(id);
+            // On affiche une fenetre de controle pour confirmer la suppression
+            const question = window.confirm("Voulez-vous vraiment supprimer cette tâche" + id + "?");
+            // On fait l'action de supprimer seulement si la fenetre de controle est confirmer
+            if (question === true) {
+                window.location.href = "http://localhost/formation_php/todolist_php/public/task/delete/" + id;
+            }
+        }
+    </script>
+{% endblock %}

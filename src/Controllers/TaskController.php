@@ -97,4 +97,16 @@ class TaskController extends AbstractController
                                             'task' => $task
                                         ]);
     }
+    public function showPlan()
+    {
+        $taskRepository = new TaskRepository();
+        $tasks = $taskRepository->showPlan();
+
+        $this->render('taskplanpage.twig',  [
+                                                'tasks' => $tasks[0],
+                                                'statusEnAttente' => $tasks[1],
+                                                'statusEncours' => $tasks[2],
+                                                'statusTermine' => $tasks[3]
+                                            ]);
+    }
 }
